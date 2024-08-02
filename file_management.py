@@ -7,19 +7,18 @@ import os
 
 import skimage.measure
 import trimesh
-from trimesh.voxel import VoxelGrid
 
 import binvox_rw
 import numpy as np
 
 PATH = os.getcwd()
 # Set the directory path
-dir_3d_path = str(PATH + "/Data/3d/")
-dir_img_path = str(PATH + "/Data/images/")
+dir_3d_path = str(PATH + "\\Data\\3d\\")
+dir_img_path = str(PATH + "/Data/imgs/")
 dir_gen_3d_path = str(PATH + "/Data/gen/")
 
 
-# to visualize the 3d object
+# to visualize the 3d objects
 def visualize_3d(obj):
     obj.show()
 
@@ -108,7 +107,7 @@ def randomizedRotation(i, center):
 
 # fn to return an image given the object name
 def get_screenShot(name):
-    voxel_model = load3DFile(str(name),False)
+    voxel_model = load3DFile(str(name), False)
 
     vertices, faces, _, _ = skimage.measure.marching_cubes(voxel_model.data, level=0.5, spacing=(1, 1, 1))
     mesh = trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
@@ -127,6 +126,7 @@ def get_screenShot(name):
     scene.graph[scene.camera.name] = camera_new
 
     img = scene.save_image(resolution=(640, 480))
+    scene.show()
 
     return img
 
@@ -145,7 +145,7 @@ def saveModel(model, name):
 
 
 # simple array as an input of false and trues
-def saveVoxel(data,name):
+def saveVoxel(data, name):
     dims = (32, 32, 32)
     translate = (0.0, 0.0, 0.0)
     scale = 1.0
@@ -158,6 +158,8 @@ def saveVoxel(data,name):
         # Write the binary data
         voxels.write(f)
 
+
+visualizeTrimeshLoad(load3DModel(dir_gen_3d_path + "lol.binvox").data)
 
 # the fn is responsible for copying the 3d models that have a screenshot to another repository for dataset perpose
 # import shutil
